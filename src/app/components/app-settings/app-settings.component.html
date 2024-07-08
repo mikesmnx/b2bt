@@ -1,16 +1,16 @@
 <div class="settings-container">
     <div class="value-container">
         <label>Timer, ms</label>
-        <input type="number">
+        <input type="number" [(ngModel)]="timer" (ngModelChange)="onSettingsChange()">
     </div>
 
     <div class="value-container">
         <label>Array size</label>
-        <input type="number">
+        <input type="number" [(ngModel)]="arraySize" (ngModelChange)="onSettingsChange()">
     </div>
 
     <div class="value-container">
         <label>Additional array ids</label>
-        <input type="text" class="long-input">
+        <input type="text" class="long-input" [(ngModel)]="additionalArrayIds" (ngModelChange)="onSettingsChange()">
     </div>
 </div>

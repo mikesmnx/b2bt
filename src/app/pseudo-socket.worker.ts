@@ -1,17 +1,20 @@
 /// <reference lib="webworker" />
 
+import { SocketAction } from "./models/socket-action";
+import { SocketActionType } from "./models/socket-action-types";
+
 let timerId: any = null;
 
-addEventListener('message', ({ data }) => {
-  const { command, timeout } = data;
+addEventListener('message', ({ data }: { data : SocketAction }) => {
+  const { command, socketSettings } = data;
 
-  if (command === 'start' && timeout) {
+  if (command === SocketActionType.Start && socketSettings !== undefined) {
     if (timerId === null) {
       timerId = setInterval(() => {
         postMessage('Worker is pushing a message');
-      }, timeout);
+      }, socketSettings.timer);
     }
-  } else if (command === 'stop') {
+  } else if (command === SocketActionType.Stop) {
     if (timerId !== null) {
       clearInterval(timerId);
       timerId = null;

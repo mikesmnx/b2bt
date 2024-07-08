@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { SocketSettings } from '../models/socket-settings';
+import { SocketActionType } from '../models/socket-action-types';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +14,12 @@ export class PseudoSocketService {
     );
   }
 
-  startWorker(timeout: number) {
-    this.worker.postMessage({ command: 'start', timeout: timeout });
+  startWorker(socketSettings: SocketSettings) {
+    this.worker.postMessage({ command: SocketActionType.Start, socketSettings });
   }
 
   stopWorker() {
-    this.worker.postMessage({ command: 'stop' });
+    this.worker.postMessage({ command: SocketActionType.Stop });
   }
 
   onMessage(callback: (message: any) => void) {

@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AppSettingsComponent } from './components/app-settings/app-settings.component';
 import { AppTableComponent } from './components/app-table/app-table.component';
 import { PseudoSocketService } from './services/pseudo-socket.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { PseudoSocketService } from './services/pseudo-socket.service';
     AppTableComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
   ],
   providers: [PseudoSocketService],
   bootstrap: [AppComponent]
