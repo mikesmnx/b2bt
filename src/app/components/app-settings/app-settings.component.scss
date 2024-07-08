@@ -1,0 +1,19 @@
+.settings-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .value-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        input {
+            width: 100px;
+
+            &.long-input {
+                width: 300px;
+            }
+        }
+    }
+}

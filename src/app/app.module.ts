@@ -2,15 +2,20 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
+import { AppSettingsComponent } from './components/app-settings/app-settings.component';
+import { AppTableComponent } from './components/app-table/app-table.component';
+import { PseudoSocketService } from './services/pseudo-socket.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AppSettingsComponent,
+    AppTableComponent,
   ],
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [PseudoSocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
