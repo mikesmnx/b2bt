@@ -1,4 +1,4 @@
-import { TableItemChild } from './table-item-child';
+import { TableItemChild } from "./table-item-child";
 
 export class TableItem {
   public id: string;
@@ -12,14 +12,13 @@ export class TableItem {
     int: number,
     float: number,
     color: string,
-    childId: string,
-    childColor: string,
+    child: TableItemChild,
   ) {
     this.id = id;
     this.int = int;
     this.float = float;
     this.color = color;
 
-    this.child = new TableItemChild(childId, childColor);
+    this.child = child;
   }
 }

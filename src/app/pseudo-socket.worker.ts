@@ -1,5 +1,6 @@
 /// <reference lib="webworker" />
 
+import { TableItemFactory } from "./classes/table-item-factory";
 import { SocketAction } from "./models/socket-action";
 import { SocketActionType } from "./models/socket-action-types";
 
@@ -11,7 +12,7 @@ addEventListener('message', ({ data }: { data : SocketAction }) => {
   if (command === SocketActionType.Start && socketSettings !== undefined) {
     if (timerId === null) {
       timerId = setInterval(() => {
-        postMessage('Worker is pushing a message');
+        postMessage(TableItemFactory.createTableItems(10));
       }, socketSettings.timer);
     }
   } else if (command === SocketActionType.Stop) {

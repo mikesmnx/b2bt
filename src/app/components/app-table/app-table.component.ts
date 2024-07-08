@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TableItem } from 'src/app/classes/table-item';
 
 @Component({
   selector: 'app-table',
@@ -7,5 +8,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppTableComponent {
-
+  @Input() rows: TableItem[] | null = [];
 }

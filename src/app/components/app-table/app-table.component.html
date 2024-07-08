@@ -1,1 +1,65 @@
-<p>app-table works!</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                id
+            </th>
+            <th>
+                int
+            </th>
+            <th>
+                float
+            </th>
+            <th>
+                color
+            </th>
+            <th>
+                child
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of rows">
+            <td>
+                {{ row.id }}
+            </td>
+            <td>
+                {{ row.int }}
+            </td>
+            <td>
+                {{ row.float }}
+            </td>
+            <td>
+                <div [style.background-color]="row.color">
+                    {{ row.color }}
+                </div>
+            </td>
+            <td>
+                <table class="nested-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                id
+                            </th>
+                            <th>
+                                color
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{ row.child.id }}
+                            </td>
+                            <td>
+                                <div [style.background-color]="row.child.color">
+                                    {{ row.child.color }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
