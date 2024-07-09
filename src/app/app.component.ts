@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { PseudoSocketService } from './services/pseudo-socket.service';
-import { SocketSettings } from './models/socket-settings';
+import { AppSettings } from './models/app-settings';
 import { TableItem } from './classes/table-item';
 import { TableItemChild } from './classes/table-item-child';
 import { Subject } from 'rxjs';
 import { SocketItem } from './models/socket-item';
 
-const DEFAULT_TIMER = 1000;
-const DEFAULT_ARRAY_SIZE = 1000;
+const DEFAULT_TIMER = 10000;
+const DEFAULT_ARRAY_SIZE = 100;
 const DEFAULT_ADDITIONAL_IDS = '';
 const DEFAULT_ITEMS_PER_PAGE = 10;
 @Component({
@@ -16,8 +16,8 @@ const DEFAULT_ITEMS_PER_PAGE = 10;
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
-  public socketSettings: SocketSettings = {
+export class AppComponent implements OnInit, OnDestroy {
+  public appSettings: AppSettings = {
     timer: DEFAULT_TIMER,
     arraySize: DEFAULT_ARRAY_SIZE,
     additionalArrayIds: DEFAULT_ADDITIONAL_IDS,
@@ -25,28 +25,45 @@ export class AppComponent implements OnInit {
 
   public rows$ = new Subject<TableItem[]>();
 
-  public additionalArrayIds = ['1', '2', '3', '4'];
+  private additionalIdsSet: Set<string> = new Set();
+
+  private isProcessing = false;
 
   constructor(private pseudoSocketService: PseudoSocketService) {}
 
   ngOnInit(): void {
-    this.pseudoSocketService.startWorker(this.socketSettings);
+    this.pseudoSocketService.startWorker(this.appSettings);
 
     this.pseudoSocketService.onMessage((items: SocketItem[]) => {
-      const processedItems = this.processMessage(items);
-
-      this.rows$.next(processedItems);
+      if (!this.isProcessing) {
+        this.isProcessing = true;
+        requestAnimationFrame(() => {
+          const processedItems = this.processMessage(items);
+          this.rows$.next(processedItems);
+          this.isProcessing = false;
+        });
+      }
     });
   }
 
-  changeSocketSettings(settings: SocketSettings): void {
-    this.socketSettings = settings;
+  changeAppSettings(settings: AppSettings): void {
+    this.appSettings = settings;
+
+    this.additionalIdsSet = new Set(
+      this.appSettings.additionalArrayIds
+        .split(',')
+        .map(id => id.trim())
+        .filter(id => id !== '')
+    );
+
+    this.pseudoSocketService.startWorker({
+      timer: this.appSettings.timer,
+      arraySize: this.appSettings.arraySize,
+    });
   }
 
   private processMessage(items: SocketItem[]): TableItem[] {
-    const additionalArrayIdsSet = new Set(this.additionalArrayIds.map(String));
-
-    const additionalItems = this.additionalArrayIds
+    const additionalItems = Array.from(this.additionalIdsSet)
       .map(id => items.find(item => item.id === id))
       .filter((item): item is SocketItem => item !== undefined);
 
@@ -55,7 +72,7 @@ export class AppComponent implements OnInit {
     if (additionalItems.length >= DEFAULT_ITEMS_PER_PAGE) {
       combinedItems = additionalItems.slice(0, DEFAULT_ITEMS_PER_PAGE);
     } else {
-      const remainingItems = items.filter(item => !additionalArrayIdsSet.has(item.id));
+      const remainingItems = items.filter(item => !this.additionalIdsSet.has(item.id));
       const neededItemsCount = DEFAULT_ITEMS_PER_PAGE - additionalItems.length;
       const neededItems = remainingItems.slice(-neededItemsCount);
       combinedItems = additionalItems.concat(neededItems);
@@ -68,5 +85,9 @@ export class AppComponent implements OnInit {
       i.color,
       new TableItemChild(i.child.id, i.child.color),
     ));
+  }
+
+  ngOnDestroy(): void {
+      this.pseudoSocketService.stopWorker();
   }
 }
