@@ -9,6 +9,7 @@ import { PseudoSocketService } from './services/pseudo-socket.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SocketSettings } from './models/socket-settings';
 import { TableItem } from './classes/table-item';
+import { TableItemChild } from './classes/table-item-child';
 
 class MockPseudoSocketService {
   private subject = new Subject<SocketItem[]>();
@@ -96,8 +97,8 @@ describe('AppComponent', () => {
     ];
 
     const expectedTableItems: TableItem[] = [
-      new TableItem('1', 10, 1.1, 'red', { id: '1.1', color: 'blue' }),
-      new TableItem('2', 20, 2.2, 'green', { id: '2.1', color: 'yellow' }),
+      new TableItem('1', 10, 1.1, 'red', new TableItemChild('1.1', 'blue')),
+      new TableItem('2', 20, 2.2, 'green', new TableItemChild('2.1','yellow')),
     ];
 
     pseudoSocketService.emit(socketItems);
