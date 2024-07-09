@@ -19,7 +19,7 @@ export class TableItemFactory {
       const int = Math.floor(Math.random() * 100);
       const float = parseFloat((Math.random() * 100).toFixed(18));
       const color = this.getRandomColor();
-      const childId = `child-${i}`;
+      const childId = `child-${ids[i]}`;
       const childColor = this.getRandomColor();
       const child = new TableItemChild(childId, childColor);
 

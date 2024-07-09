@@ -6,7 +6,7 @@ import { TableItemChild } from './classes/table-item-child';
 import { Subject } from 'rxjs';
 import { SocketItem } from './models/socket-item';
 
-const DEFAULT_TIMER = 10000;
+const DEFAULT_TIMER = 50000;
 const DEFAULT_ARRAY_SIZE = 100;
 const DEFAULT_ADDITIONAL_IDS = '';
 const DEFAULT_ITEMS_PER_PAGE = 10;

@@ -1,4 +1,4 @@
-import { TableItemChild } from "./table-item-child";
+import { TableItemChild } from './table-item-child';
 
 export class TableItem {
   public id: string;
@@ -12,7 +12,7 @@ export class TableItem {
     int: number,
     float: number,
     color: string,
-    child: TableItemChild,
+    child: TableItemChild
   ) {
     this.id = id;
     this.int = int;
@@ -20,5 +20,16 @@ export class TableItem {
     this.color = color;
 
     this.child = child;
+  }
+
+  formatFloat(): string {
+    const floatStr = this.float.toString();
+    const decimalIndex = floatStr.indexOf('.');
+
+    if (decimalIndex !== -1 && floatStr.length - decimalIndex - 1 > 6) {
+      return this.float.toFixed(6) + '...';
+    }
+
+    return floatStr;
   }
 }
