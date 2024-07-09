@@ -33,16 +33,16 @@ export class AppSettingsComponent {
     }
   }
 
-  private isPositiveNumber(value: any): boolean {
+  isPositiveNumber(value: any): boolean {
     return !isNaN(value) && value > 0;
   }
 
-  private isValidAdditionalArrayIds(value: string): boolean {
-    if (value.trim() === '') return true;
-    return /^(\d+(\s*,\s*|\s+))*\d+$/.test(value.trim());
+  isValidAdditionalArrayIds(value: string): boolean {
+    if (value?.trim() === '') return true;
+    return /^(\d+(\s*,\s*|\s+))*\d+$/.test(value?.trim());
   }
 
-  private processAdditionalArrayIds(value: string): string {
+  processAdditionalArrayIds(value: string): string {
     if (value.trim() === '') return '';
     return value.split(/[\s,]+/).map(id => id.trim()).filter(id => id !== '').join(',');
   }

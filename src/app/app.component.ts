@@ -6,7 +6,7 @@ import { TableItemChild } from './classes/table-item-child';
 import { Subject } from 'rxjs';
 import { SocketItem } from './models/socket-item';
 
-const DEFAULT_TIMER = 50000;
+const DEFAULT_TIMER = 1000;
 const DEFAULT_ARRAY_SIZE = 100;
 const DEFAULT_ADDITIONAL_IDS = '';
 const DEFAULT_ITEMS_PER_PAGE = 10;
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public rows$ = new Subject<TableItem[]>();
 
-  private additionalIdsSet: Set<string> = new Set();
+  public additionalIdsSet: Set<string> = new Set();
 
   private isProcessing = false;
 
